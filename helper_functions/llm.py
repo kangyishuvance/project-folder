@@ -4,10 +4,10 @@ from openai import OpenAI
 import tiktoken
 
 load_dotenv('.env')
+# Pass the API Key to the OpenAI Client
+client = OpenAI(api_key = os.getenv('OPENAI_API_KEY'))
 
-client = OpenAI(os.getenv('OPENAI_API_KEY'))
 
-#%%
 
 def get_embedding(input, model = 'text-embedding-3-small'):
     response = client.embedding.create(
@@ -48,3 +48,17 @@ def get_completion_by_messages(messages, model="gpt-4o-mini", temperature=0, top
         n=1
     )
     return response.choices[0].message.content
+
+
+# This function is for calculating the tokens given the "message"
+# ⚠️ This is simplified implementation that is good enough for a rough estimation
+
+def count_tokens(text):
+    encoding = tiktoken.encoding_for_model('gpt-4o-mini')
+    return len(encoding.encode(text))
+
+
+def count_tokens_from_message(messages):
+    encoding = tiktoken.encoding_for_model('gpt-4o-mini')
+    value = ' '.join([x.get('content') for x in messages])
+    return len(encoding.encode(value))
