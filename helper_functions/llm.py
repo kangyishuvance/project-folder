@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import tiktoken
 
+
 load_dotenv('.env')
 # Pass the API Key to the OpenAI Client
 client = OpenAI(api_key = os.getenv('OPENAI_API_KEY'))
@@ -47,6 +48,7 @@ def get_completion_by_messages(messages, model="gpt-4o-mini", temperature=0, top
         max_tokens=max_tokens,
         n=1
     )
+    
     return response.choices[0].message.content
 
 
